@@ -1,1 +1,1 @@
-Contains figures and graph constructed by the R script. 
+Contains figures and graphs constructed by the R script. 
