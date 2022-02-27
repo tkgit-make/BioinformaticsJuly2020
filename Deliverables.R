@@ -1,3 +1,6 @@
+# Author: Tanish Kumar
+# Date: July 2021
+
 #####
 #Loading Libraries
 library(affy)
@@ -26,7 +29,7 @@ raw <- ReadAffy(celfile.path = "FinalSamples")
 # meta <- read.csv(file = "metadata.csv")
 
 #####
-#Normalizing the data
+#Normalizing the data using RMA
 
 normdata <- rma(raw)
 
@@ -52,18 +55,19 @@ boxplot(nusedata)
 boxplot(raw)
 boxplot(normdata)
 
-# #####
-# #Batch Correction
-# normmatrix <- exprs(normdata)
-# 
-# modeldata <- model.matrix(~CN-1, data = meta)
-# 
-# combatdata <- ComBat(dat = normmatrix, batch = meta$BATCH, mod = modeldata[,1])
-# 
-# write.csv(combatdata, file = "CombatData.csv")
+#####
+#Batch Correction
+normmatrix <- exprs(normdata)
+
+modeldata <- model.matrix(~CN-1, data = meta)
+
+combatdata <- ComBat(dat = normmatrix, batch = meta$BATCH, mod = modeldata[,1])
+
+write.csv(combatdata, file = "CombatData.csv")
 
 #####
 #PCA Plot
+
 prcompdata <- prcomp(normdata)
 prcompdf <- as.data.frame(prcompdata$rotation)
 group <- factor(c(rep("control", 16), rep("cancer", 17))) 
